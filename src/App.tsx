@@ -501,8 +501,8 @@ p {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <div className="flex justify-center px-4">
-            <TabsList className="inline-flex h-12 items-center rounded-xl bg-white p-1.5 shadow-lg shadow-slate-200/50 border border-slate-200 gap-1">
+          <div className="flex justify-center px-4 overflow-x-auto scrollbar-hide">
+            <TabsList className="inline-flex h-12 items-center rounded-xl bg-white p-1.5 shadow-lg shadow-slate-200/50 border border-slate-200 gap-1 min-w-min">
               <TabsTrigger value="colors" className="gap-2 data-[state=active]:bg-slate-900 data-[state=active]:text-white whitespace-nowrap flex-shrink-0">
                 <Palette className="h-4 w-4 flex-shrink-0" />
                 <span className="text-sm hidden min-[910px]:inline">Colors</span>
