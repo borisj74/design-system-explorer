@@ -583,8 +583,8 @@ p {
             {/* Save Version CTA */}
             <Card className="border-2 border-slate-900 bg-slate-50 shadow-lg shadow-slate-200/50">
               <CardHeader>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                  <div className="flex-1 w-full sm:w-auto">
                     <div className="flex items-center gap-2 mb-2">
                       <CardTitle className="text-xl flex items-center gap-2">
                         <Save className="h-5 w-5" />
@@ -609,7 +609,7 @@ p {
                       )}
                     </div>
                     <CardDescription className="text-base">
-                      {activeVersion 
+                      {activeVersion
                         ? `Currently viewing "${activeVersion.name}" version. Make changes and save as a new version, or click × to clear.`
                         : 'Save this version of your design system so you can restore it later or compare it with other versions'
                       }
@@ -617,7 +617,7 @@ p {
                   </div>
                   <Dialog open={showPreviewSaveDialog} onOpenChange={setShowPreviewSaveDialog}>
                     <DialogTrigger asChild>
-                      <Button size="lg" className="gap-2 flex-shrink-0">
+                      <Button size="lg" className="gap-2 w-full sm:w-auto sm:flex-shrink-0">
                         <Save className="h-4 w-4" />
                         Save This Version
                       </Button>
