@@ -260,27 +260,32 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
             <CardContent>
               <div className="grid grid-cols-4 gap-3">
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Default</h4>
-                  <Button className="w-full">Primary</Button>
-                  <Button variant="secondary" className="w-full">Secondary</Button>
-                  <Button variant="outline" className="w-full">Outline</Button>
-                  <Button variant="ghost" className="w-full">Ghost</Button>
+                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Primary</h4>
+                  <Button className="w-full" style={{ backgroundColor: primaryColor, color: backgroundColor }}>Default</Button>
+                  <Button className="w-full opacity-90" style={{ backgroundColor: primaryColor, color: backgroundColor }}>Hover</Button>
+                  <Button className="w-full opacity-80" style={{ backgroundColor: primaryColor, color: backgroundColor }}>Active</Button>
+                  <Button disabled className="w-full" style={{ backgroundColor: primaryColor, color: backgroundColor }}>Disabled</Button>
                 </div>
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Destructive</h4>
-                  <Button variant="destructive" className="w-full">Delete</Button>
-                  <Button variant="outline" className="w-full text-destructive border-destructive hover:bg-destructive/10">Remove</Button>
+                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Secondary</h4>
+                  <Button variant="secondary" className="w-full" style={{ backgroundColor: secondaryColor + '20', color: secondaryColor }}>Default</Button>
+                  <Button variant="secondary" className="w-full" style={{ backgroundColor: secondaryColor + '30', color: secondaryColor }}>Hover</Button>
+                  <Button variant="secondary" className="w-full" style={{ backgroundColor: secondaryColor + '40', color: secondaryColor }}>Active</Button>
+                  <Button variant="secondary" disabled className="w-full" style={{ backgroundColor: secondaryColor + '20', color: secondaryColor }}>Disabled</Button>
                 </div>
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Sizes</h4>
-                  <Button size="sm" className="w-full">Small</Button>
-                  <Button size="default" className="w-full">Default</Button>
-                  <Button size="lg" className="w-full">Large</Button>
+                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Outline</h4>
+                  <Button variant="outline" className="w-full" style={{ borderColor: primaryColor, color: primaryColor }}>Default</Button>
+                  <Button variant="outline" className="w-full" style={{ borderColor: primaryColor, color: primaryColor, backgroundColor: primaryColor + '10' }}>Hover</Button>
+                  <Button variant="outline" className="w-full" style={{ borderColor: primaryColor, color: primaryColor, backgroundColor: primaryColor + '20' }}>Active</Button>
+                  <Button variant="outline" disabled className="w-full" style={{ borderColor: primaryColor, color: primaryColor }}>Disabled</Button>
                 </div>
                 <div className="space-y-2">
-                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>States</h4>
-                  <Button className="w-full">Enabled</Button>
-                  <Button disabled className="w-full">Disabled</Button>
+                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Accent</h4>
+                  <Button className="w-full" style={{ backgroundColor: accentColor, color: foregroundColor }}>Default</Button>
+                  <Button className="w-full opacity-90" style={{ backgroundColor: accentColor, color: foregroundColor }}>Hover</Button>
+                  <Button className="w-full opacity-80" style={{ backgroundColor: accentColor, color: foregroundColor }}>Active</Button>
+                  <Button disabled className="w-full" style={{ backgroundColor: accentColor, color: foregroundColor }}>Disabled</Button>
                 </div>
               </div>
             </CardContent>
