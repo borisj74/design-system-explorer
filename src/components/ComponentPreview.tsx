@@ -188,6 +188,12 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
                   { month: 'Apr', values: [35, 30, 25] },
                   { month: 'May', values: [30, 35, 50] },
                   { month: 'Jun', values: [25, 30, 20] },
+                  { month: 'Jul', values: [35, 25, 30] },
+                  { month: 'Aug', values: [45, 35, 25] },
+                  { month: 'Sep', values: [30, 40, 35] },
+                  { month: 'Oct', values: [25, 30, 40] },
+                  { month: 'Nov', values: [40, 25, 30] },
+                  { month: 'Dec', values: [50, 40, 35] },
                 ].map((item, idx) => (
                   <div key={idx} className="flex-1 flex flex-col items-center gap-1">
                     <div className="w-full flex flex-col gap-0.5" style={{ height: '70px' }}>
