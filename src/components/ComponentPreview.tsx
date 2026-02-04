@@ -7,6 +7,10 @@ import { Switch } from '@/components/ui/switch'
 import { Progress } from '@/components/ui/progress'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Textarea } from '@/components/ui/textarea'
+import { Separator } from '@/components/ui/separator'
 import { Search } from 'lucide-react'
 
 interface ComponentPreviewProps {
@@ -463,67 +467,143 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
             </CardContent>
           </Card>
 
-          {/* Form Elements using shadcn Input and Label */}
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base" style={{ fontFamily: typography.fontFamily }}>Form Components</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" style={{ fontFamily: typography.fontFamily }}>Email</Label>
-                  <Input id="email" type="email" placeholder="you@example.com" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password" style={{ fontFamily: typography.fontFamily }}>Password</Label>
-                  <Input id="password" type="password" placeholder="••••••••" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Navigation Elements - Breadcrumbs & Search using shadcn components */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {/* Breadcrumbs */}
+          {/* Form and Navigation Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Payment Method Form */}
             <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Breadcrumbs</CardTitle>
+              <CardHeader className="pb-4">
+                <CardTitle className="text-base" style={{ fontFamily: typography.fontFamily }}>Payment Method</CardTitle>
+                <CardDescription>All transactions are secure and encrypted</CardDescription>
               </CardHeader>
-              <CardContent>
-                <Breadcrumb>
-                  <BreadcrumbList>
-                    <BreadcrumbItem>
-                      <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbLink href="#">Projects</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage>Design System</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </BreadcrumbList>
-                </Breadcrumb>
+              <CardContent className="space-y-4">
+                {/* Name on Card */}
+                <div className="space-y-2">
+                  <Label htmlFor="name" style={{ fontFamily: typography.fontFamily }}>Name on Card</Label>
+                  <Input id="name" placeholder="John Doe" />
+                </div>
+
+                {/* Card Number and CVV */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="col-span-2 space-y-2">
+                    <Label htmlFor="cardNumber" style={{ fontFamily: typography.fontFamily }}>Card Number</Label>
+                    <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
+                    <p className="text-xs text-muted-foreground">Enter your 16-digit number.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="cvv" style={{ fontFamily: typography.fontFamily }}>CVV</Label>
+                    <Input id="cvv" placeholder="123" />
+                  </div>
+                </div>
+
+                {/* Month and Year */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label style={{ fontFamily: typography.fontFamily }}>Month</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="MM" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <SelectItem key={i + 1} value={String(i + 1).padStart(2, '0')}>
+                            {String(i + 1).padStart(2, '0')}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label style={{ fontFamily: typography.fontFamily }}>Year</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="YYYY" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 10 }, (_, i) => (
+                          <SelectItem key={i} value={String(2024 + i)}>
+                            {2024 + i}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Billing Address */}
+                <div className="space-y-3">
+                  <div>
+                    <h4 className="font-medium" style={{ fontFamily: typography.fontFamily }}>Billing Address</h4>
+                    <p className="text-sm text-muted-foreground">The billing address associated with your payment method</p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox id="sameAddress" defaultChecked />
+                    <Label htmlFor="sameAddress" className="font-normal" style={{ fontFamily: typography.fontFamily }}>
+                      Same as shipping address
+                    </Label>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Comments */}
+                <div className="space-y-2">
+                  <Label htmlFor="comments" style={{ fontFamily: typography.fontFamily }}>Comments</Label>
+                  <Textarea id="comments" placeholder="Add any additional comments" rows={3} />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-2 pt-2">
+                  <Button style={{ backgroundColor: primaryColor, color: backgroundColor }}>Submit</Button>
+                  <Button variant="outline">Cancel</Button>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Search Input */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Search</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder="Search components..."
-                    className="pl-10"
-                  />
-                </div>
-              </CardContent>
-            </Card>
+            {/* Breadcrumbs and Search */}
+            <div className="space-y-4">
+              {/* Breadcrumbs */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Breadcrumbs</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Breadcrumb>
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#">Projects</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>Design System</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </CardContent>
+              </Card>
+
+              {/* Search Input */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Search</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Search components..."
+                      className="pl-10"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* Product Cards */}
