@@ -310,59 +310,7 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
             </div>
           </div>
 
-          {/* Alerts - Compact Single Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {colorValues.slice(0, 3).map((color, idx) => {
-              const alerts = [
-                { icon: '✓', title: 'Success', desc: 'Changes saved' },
-                { icon: 'i', title: 'Info', desc: 'New features available' },
-                { icon: '!', title: 'Warning', desc: 'Review required' },
-              ]
-              const alert = alerts[idx] || alerts[0]
-              return (
-                <div
-                  key={idx}
-                  style={{
-                    padding: `${sp.sm}px ${sp.md}px`,
-                    borderRadius: `${radius.md}px`,
-                    backgroundColor: color + '10',
-                    border: `1px solid ${color}`,
-                    display: 'flex',
-                    gap: `${sp.sm}px`,
-                    alignItems: 'center',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      borderRadius: '50%',
-                      backgroundColor: color,
-                      flexShrink: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {alert.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 style={{ fontSize: `${fontSize.sm}px`, fontWeight: '600', color: foregroundColor, fontFamily: typography.fontFamily }}>
-                      {alert.title}
-                    </h4>
-                    <p style={{ fontSize: `${fontSize.xs}px`, color: secondaryColor, fontFamily: typography.fontFamily }}>
-                      {alert.desc}
-                    </p>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Navigation Elements - Breadcrumbs & Search */}
+{/* Navigation Elements - Breadcrumbs & Search */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Breadcrumbs */}
             <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
