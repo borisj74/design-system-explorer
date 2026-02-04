@@ -581,7 +581,7 @@ p {
 
           <TabsContent value="preview" className="space-y-6">
             {/* Save Version CTA */}
-            <Card className="border-2 border-gray-300 bg-slate-50 shadow-lg shadow-slate-200/50">
+            <Card className="border border-gray-200 bg-white">
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
