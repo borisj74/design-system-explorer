@@ -248,8 +248,8 @@ export default function VersionHistory({ currentState, onRestore, activeVersion,
     <div className="space-y-6">
       <Card className="border-slate-200 shadow-lg shadow-slate-200/50">
         <CardHeader>
-          <div className="flex items-start justify-between">
-            <div>
+          <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+            <div className="w-full sm:w-auto">
               <CardTitle className="text-2xl flex items-center gap-2">
                 <Clock className="h-6 w-6" />
                 Versions
@@ -258,9 +258,9 @@ export default function VersionHistory({ currentState, onRestore, activeVersion,
                 Save complete snapshots of your entire design system (colors, typography, spacing, shadows, etc.) to create backup points you can restore later
               </CardDescription>
             </div>
-            <div className="flex gap-2">
-              <label htmlFor="import-version">
-                <Button variant="outline" size="sm" className="gap-2 cursor-pointer" asChild>
+            <div className="flex gap-2 w-full sm:w-auto sm:flex-shrink-0">
+              <label htmlFor="import-version" className="flex-1 sm:flex-initial">
+                <Button variant="outline" size="sm" className="gap-2 cursor-pointer w-full" asChild>
                   <span>
                     <Upload className="h-4 w-4" />
                     Import
@@ -275,8 +275,8 @@ export default function VersionHistory({ currentState, onRestore, activeVersion,
                 className="hidden"
               />
               <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
-                <DialogTrigger asChild>
-                  <Button size="sm" className="gap-2">
+                <DialogTrigger asChild className="flex-1 sm:flex-initial">
+                  <Button size="sm" className="gap-2 w-full sm:w-auto">
                     <Save className="h-4 w-4" />
                     Save Version
                   </Button>
