@@ -44,7 +44,7 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
   if (colorValues.length === 0) {
     return (
       <div className="space-y-4">
-        <Card className="border-slate-200 shadow-lg shadow-slate-200/50">
+        <Card className="border-slate-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-xl">Live Preview</CardTitle>
             <CardDescription>
@@ -107,7 +107,7 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
 
   return (
     <div className="space-y-4">
-      <Card className="border-slate-200 shadow-lg shadow-slate-200/50">
+      <Card className="border-slate-200">
         <CardHeader className="pb-3">
           <CardTitle className="text-xl">Live Preview</CardTitle>
           <CardDescription>
