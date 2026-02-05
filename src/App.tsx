@@ -487,14 +487,14 @@ p {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-100 via-slate-50 to-white">
+    <div className="min-h-dvh w-full bg-slate-50">
       <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <header className="mb-12 text-center">
-          <h1 className="text-5xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900">
+          <h1 className="text-5xl font-bold text-balance mb-4 text-slate-900">
             Design System Explorer
           </h1>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-600 max-w-3xl mx-auto text-pretty">
             Build, test, and export your design tokens in real-time. Create cohesive systems with live component previews.
           </p>
         </header>
@@ -581,7 +581,7 @@ p {
 
           <TabsContent value="preview" className="space-y-6">
             {/* Save Version CTA */}
-            <Card className="border-2 border-slate-900 bg-slate-50 shadow-lg shadow-slate-200/50">
+            <Card className="border border-gray-200 bg-white shadow-sm">
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
