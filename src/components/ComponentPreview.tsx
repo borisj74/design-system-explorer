@@ -2,6 +2,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Progress } from '@/components/ui/progress'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Textarea } from '@/components/ui/textarea'
+import { Separator } from '@/components/ui/separator'
 import { Search } from 'lucide-react'
 
 interface ComponentPreviewProps {
@@ -35,11 +44,11 @@ interface ComponentPreviewProps {
 export default function ComponentPreview({ colors, typography, spacing, borderRadius, shadows, opacity, lineHeight }: ComponentPreviewProps) {
   // Helper to get color with fallback
   const getColor = (key: string, fallback: string) => colors[key] || fallback
-  
+
   // Get all color values as an array
   const colorValues = Object.values(colors)
   const colorEntries = Object.entries(colors)
-  
+
   // Safety check - if no colors, use defaults
   if (colorValues.length === 0) {
     return (
@@ -58,17 +67,17 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
       </div>
     )
   }
-  
+
   // Get primary colors with fallbacks
   const primaryColor = colorValues[0] || '#0F172A'
   const secondaryColor = colorValues[1] || '#64748B'
   const accentColor = colorValues[2] || '#F59E0B'
   const backgroundColor = getColor('background', '#FFFFFF')
   const foregroundColor = getColor('foreground', '#0F172A')
-  
+
   // Helper to get color by index (cycles through all colors)
   const getColorByIndex = (index: number) => colorValues[index % colorValues.length]
-  
+
   // Calculate spacing values
   const sp = {
     xs: spacing.base * Math.pow(spacing.scale, 0),
@@ -115,300 +124,485 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Compact 2-column layout for charts and stats */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Donut Chart - Compact */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3" style={{ fontFamily: typography.fontFamily }}>
-                Expenses
-              </h3>
-              <div className="flex gap-4">
-                {/* Smaller donut */}
-                <div className="relative" style={{ width: '120px', height: '120px', flexShrink: 0 }}>
-                  <svg viewBox="0 0 120 120" className="transform -rotate-90">
-                    <circle cx="60" cy="60" r="42" fill="none" stroke="#f1f5f9" strokeWidth="24" />
-                    {/* Draw segments for each color */}
-                    {colorValues.slice(0, Math.min(colorValues.length, 6)).map((color, index) => {
-                      const totalColors = Math.min(colorValues.length, 6)
-                      const segmentSize = 1 / totalColors
-                      const offset = -segmentSize * index
+          {/* Charts Section */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base" style={{ fontFamily: typography.fontFamily }}>Charts</CardTitle>
+              <CardDescription>Various chart types using your color palette</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Line Chart */}
+                <div className="p-4 border rounded-lg">
+                  <h4 className="text-sm font-medium mb-3" style={{ fontFamily: typography.fontFamily }}>Line Chart</h4>
+                  <svg viewBox="0 0 200 100" className="w-full h-24">
+                    {/* Grid lines */}
+                    {[0, 25, 50, 75, 100].map((y) => (
+                      <line key={y} x1="0" y1={y} x2="200" y2={y} stroke="#e2e8f0" strokeWidth="0.5" />
+                    ))}
+                    {/* Line 1 */}
+                    <polyline
+                      fill="none"
+                      stroke={primaryColor}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      points="0,70 33,50 66,60 100,30 133,45 166,25 200,35"
+                    />
+                    {/* Line 2 */}
+                    <polyline
+                      fill="none"
+                      stroke={secondaryColor}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      points="0,80 33,70 66,75 100,55 133,65 166,50 200,60"
+                    />
+                    {/* Line 3 */}
+                    <polyline
+                      fill="none"
+                      stroke={accentColor}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      points="0,90 33,85 66,80 100,70 133,75 166,65 200,70"
+                    />
+                    {/* Data points */}
+                    {[0, 33, 66, 100, 133, 166, 200].map((x, i) => (
+                      <circle key={i} cx={x} cy={[70, 50, 60, 30, 45, 25, 35][i]} r="3" fill={primaryColor} />
+                    ))}
+                  </svg>
+                  <div className="flex justify-center gap-4 mt-2">
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-0.5" style={{ backgroundColor: primaryColor }} />
+                      <span className="text-xs text-muted-foreground">Revenue</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-0.5" style={{ backgroundColor: secondaryColor }} />
+                      <span className="text-xs text-muted-foreground">Costs</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-0.5" style={{ backgroundColor: accentColor }} />
+                      <span className="text-xs text-muted-foreground">Profit</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Area Chart */}
+                <div className="p-4 border rounded-lg">
+                  <h4 className="text-sm font-medium mb-3" style={{ fontFamily: typography.fontFamily }}>Area Chart</h4>
+                  <svg viewBox="0 0 200 100" className="w-full h-24">
+                    <defs>
+                      <linearGradient id="areaGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style={{ stopColor: primaryColor, stopOpacity: 0.4 }} />
+                        <stop offset="100%" style={{ stopColor: primaryColor, stopOpacity: 0.05 }} />
+                      </linearGradient>
+                      <linearGradient id="areaGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style={{ stopColor: accentColor, stopOpacity: 0.4 }} />
+                        <stop offset="100%" style={{ stopColor: accentColor, stopOpacity: 0.05 }} />
+                      </linearGradient>
+                    </defs>
+                    {/* Area 1 */}
+                    <path
+                      d="M0,60 Q25,40 50,50 T100,35 T150,45 T200,30 L200,100 L0,100 Z"
+                      fill="url(#areaGradient1)"
+                    />
+                    <path
+                      d="M0,60 Q25,40 50,50 T100,35 T150,45 T200,30"
+                      fill="none"
+                      stroke={primaryColor}
+                      strokeWidth="2"
+                    />
+                    {/* Area 2 */}
+                    <path
+                      d="M0,75 Q25,65 50,70 T100,55 T150,65 T200,50 L200,100 L0,100 Z"
+                      fill="url(#areaGradient2)"
+                    />
+                    <path
+                      d="M0,75 Q25,65 50,70 T100,55 T150,65 T200,50"
+                      fill="none"
+                      stroke={accentColor}
+                      strokeWidth="2"
+                    />
+                  </svg>
+                  <div className="flex justify-center gap-4 mt-2">
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: primaryColor + '60' }} />
+                      <span className="text-xs text-muted-foreground">Sales</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: accentColor + '60' }} />
+                      <span className="text-xs text-muted-foreground">Orders</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bar Chart (Vertical) */}
+                <div className="p-4 border rounded-lg">
+                  <h4 className="text-sm font-medium mb-3" style={{ fontFamily: typography.fontFamily }}>Bar Chart</h4>
+                  <svg viewBox="0 0 200 100" className="w-full h-24">
+                    {/* Grid lines */}
+                    {[25, 50, 75, 100].map((y) => (
+                      <line key={y} x1="0" y1={y} x2="200" y2={y} stroke="#e2e8f0" strokeWidth="0.5" />
+                    ))}
+                    {/* Bars */}
+                    {[
+                      { x: 10, h1: 60, h2: 45, h3: 30 },
+                      { x: 50, h1: 75, h2: 55, h3: 40 },
+                      { x: 90, h1: 50, h2: 70, h3: 35 },
+                      { x: 130, h1: 85, h2: 60, h3: 50 },
+                      { x: 170, h1: 65, h2: 80, h3: 45 },
+                    ].map((bar, i) => (
+                      <g key={i}>
+                        <rect x={bar.x} y={100 - bar.h1} width="10" height={bar.h1} fill={primaryColor} rx="2" />
+                        <rect x={bar.x + 12} y={100 - bar.h2} width="10" height={bar.h2} fill={secondaryColor} rx="2" />
+                        <rect x={bar.x + 24} y={100 - bar.h3} width="10" height={bar.h3} fill={accentColor} rx="2" />
+                      </g>
+                    ))}
+                  </svg>
+                  <div className="flex justify-center gap-3 mt-2">
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-3 rounded-sm" style={{ backgroundColor: primaryColor }} />
+                      <span className="text-xs text-muted-foreground">Q1</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-3 rounded-sm" style={{ backgroundColor: secondaryColor }} />
+                      <span className="text-xs text-muted-foreground">Q2</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-3 rounded-sm" style={{ backgroundColor: accentColor }} />
+                      <span className="text-xs text-muted-foreground">Q3</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pie Chart */}
+                <div className="p-4 border rounded-lg">
+                  <h4 className="text-sm font-medium mb-3" style={{ fontFamily: typography.fontFamily }}>Pie Chart</h4>
+                  <div className="flex items-center justify-center">
+                    <svg viewBox="0 0 100 100" className="w-24 h-24">
+                      {colorValues.slice(0, Math.min(colorValues.length, 5)).map((color, index) => {
+                        const total = Math.min(colorValues.length, 5)
+                        const segmentAngle = 360 / total
+                        const startAngle = index * segmentAngle - 90
+                        const endAngle = startAngle + segmentAngle
+                        const startRad = (startAngle * Math.PI) / 180
+                        const endRad = (endAngle * Math.PI) / 180
+                        const x1 = 50 + 40 * Math.cos(startRad)
+                        const y1 = 50 + 40 * Math.sin(startRad)
+                        const x2 = 50 + 40 * Math.cos(endRad)
+                        const y2 = 50 + 40 * Math.sin(endRad)
+                        const largeArc = segmentAngle > 180 ? 1 : 0
+                        return (
+                          <path
+                            key={index}
+                            d={`M 50 50 L ${x1} ${y1} A 40 40 0 ${largeArc} 1 ${x2} ${y2} Z`}
+                            fill={color}
+                            stroke="white"
+                            strokeWidth="1"
+                          />
+                        )
+                      })}
+                    </svg>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2 mt-2">
+                    {colorEntries.slice(0, Math.min(colorEntries.length, 5)).map(([name, color], idx) => (
+                      <div key={idx} className="flex items-center gap-1">
+                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                        <span className="text-xs text-muted-foreground">{name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Radar Chart */}
+                <div className="p-4 border rounded-lg">
+                  <h4 className="text-sm font-medium mb-3" style={{ fontFamily: typography.fontFamily }}>Radar Chart</h4>
+                  <svg viewBox="0 0 200 200" className="w-full h-32">
+                    {/* Background polygons */}
+                    {[80, 60, 40, 20].map((r, i) => {
+                      const points = [0, 1, 2, 3, 4, 5].map((j) => {
+                        const angle = (j * 60 - 90) * (Math.PI / 180)
+                        return `${100 + r * Math.cos(angle)},${100 + r * Math.sin(angle)}`
+                      }).join(' ')
+                      return (
+                        <polygon
+                          key={i}
+                          points={points}
+                          fill="none"
+                          stroke="#e2e8f0"
+                          strokeWidth="1"
+                        />
+                      )
+                    })}
+                    {/* Axis lines */}
+                    {[0, 1, 2, 3, 4, 5].map((i) => {
+                      const angle = (i * 60 - 90) * (Math.PI / 180)
+                      return (
+                        <line
+                          key={i}
+                          x1="100"
+                          y1="100"
+                          x2={100 + 80 * Math.cos(angle)}
+                          y2={100 + 80 * Math.sin(angle)}
+                          stroke="#e2e8f0"
+                          strokeWidth="1"
+                        />
+                      )
+                    })}
+                    {/* Data polygon 1 */}
+                    <polygon
+                      points={[70, 55, 65, 50, 60, 75].map((r, i) => {
+                        const angle = (i * 60 - 90) * (Math.PI / 180)
+                        return `${100 + r * Math.cos(angle)},${100 + r * Math.sin(angle)}`
+                      }).join(' ')}
+                      fill={primaryColor + '30'}
+                      stroke={primaryColor}
+                      strokeWidth="2"
+                    />
+                    {/* Data polygon 2 */}
+                    <polygon
+                      points={[50, 70, 45, 65, 55, 40].map((r, i) => {
+                        const angle = (i * 60 - 90) * (Math.PI / 180)
+                        return `${100 + r * Math.cos(angle)},${100 + r * Math.sin(angle)}`
+                      }).join(' ')}
+                      fill={accentColor + '30'}
+                      stroke={accentColor}
+                      strokeWidth="2"
+                    />
+                    {/* Data points */}
+                    {[70, 55, 65, 50, 60, 75].map((r, i) => {
+                      const angle = (i * 60 - 90) * (Math.PI / 180)
                       return (
                         <circle
-                          key={index}
-                          cx="60"
-                          cy="60"
-                          r="42"
-                          fill="none"
-                          stroke={color}
-                          strokeWidth="24"
-                          strokeDasharray={`${2 * Math.PI * 42 * segmentSize} ${2 * Math.PI * 42}`}
-                          strokeDashoffset={`${2 * Math.PI * 42 * offset}`}
+                          key={i}
+                          cx={100 + r * Math.cos(angle)}
+                          cy={100 + r * Math.sin(angle)}
+                          r="3"
+                          fill={primaryColor}
                         />
                       )
                     })}
                   </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div style={{ fontSize: '16px', fontWeight: '700', fontFamily: typography.fontFamily }}>$14.9K</div>
+                  <div className="flex justify-center gap-4 mt-1">
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: primaryColor + '60' }} />
+                      <span className="text-xs text-muted-foreground">Team A</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: accentColor + '60' }} />
+                      <span className="text-xs text-muted-foreground">Team B</span>
                     </div>
                   </div>
                 </div>
-                {/* Compact legend */}
-                <div className="flex-1 space-y-1 text-sm">
-                  {colorEntries.slice(0, Math.min(colorEntries.length, 6)).map(([name, color], idx) => {
-                    const totalColors = Math.min(colorEntries.length, 6)
-                    const amount = (14919 / totalColors).toFixed(0)
-                    return (
-                      <div key={idx} className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: color }} />
-                          <span className="truncate" style={{ fontFamily: typography.fontFamily, fontSize: '12px' }}>{name}</span>
+
+                {/* Horizontal Bar Chart */}
+                <div className="p-4 border rounded-lg">
+                  <h4 className="text-sm font-medium mb-3" style={{ fontFamily: typography.fontFamily }}>Horizontal Bars</h4>
+                  <div className="space-y-2">
+                    {[
+                      { label: 'Product A', value: 85 },
+                      { label: 'Product B', value: 65 },
+                      { label: 'Product C', value: 45 },
+                      { label: 'Product D', value: 75 },
+                    ].map((item, idx) => (
+                      <div key={idx} className="space-y-1">
+                        <div className="flex justify-between text-xs">
+                          <span style={{ fontFamily: typography.fontFamily }}>{item.label}</span>
+                          <span className="text-muted-foreground">{item.value}%</span>
                         </div>
-                        <span style={{ fontWeight: '500', fontFamily: typography.fontFamily, fontSize: '12px' }}>
-                          ${(parseInt(amount) / 1000).toFixed(1)}K
-                        </span>
+                        <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all"
+                            style={{
+                              width: `${item.value}%`,
+                              backgroundColor: getColorByIndex(idx),
+                            }}
+                          />
+                        </div>
                       </div>
-                    )
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Bar Chart - Compact */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold" style={{ fontFamily: typography.fontFamily }}>Monthly Trend</h3>
-                <div style={{ fontSize: '18px', fontWeight: '700', fontFamily: typography.fontFamily }}>$12.5K</div>
-              </div>
-              <div className="h-24 flex items-end justify-between gap-1">
-                {[
-                  { month: 'Jan', values: [40, 30, 20] },
-                  { month: 'Feb', values: [20, 25, 35] },
-                  { month: 'Mar', values: [15, 20, 10] },
-                  { month: 'Apr', values: [35, 30, 25] },
-                  { month: 'May', values: [30, 35, 50] },
-                  { month: 'Jun', values: [25, 30, 20] },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex-1 flex flex-col items-center gap-1">
-                    <div className="w-full flex flex-col gap-0.5" style={{ height: '70px' }}>
-                      {item.values.map((height, i) => (
-                        <div key={i} className="w-full" style={{ height: `${height}%`, backgroundColor: getColorByIndex(i), borderRadius: '2px' }} />
-                      ))}
-                    </div>
-                    <span style={{ fontSize: '10px', color: secondaryColor }}>{item.month}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Stat Cards - Single Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {colorValues.slice(0, 3).map((color, idx) => {
-              const stats = [
-                { title: 'Income', value: '$15.9K', prev: '$18.8K', path: 'M 0,20 L 20,15 L 40,18 L 60,12 L 80,16 L 100,10' },
-                { title: 'Expenses', value: '$12.5K', prev: '$10.2K', path: 'M 0,25 L 20,22 L 40,24 L 60,20 L 80,18 L 100,15' },
-                { title: 'Savings', value: '$5.2K', prev: '$10.2K', path: 'M 0,15 L 20,18 L 40,25 L 60,20 L 80,12 L 100,14' },
-              ]
-              const stat = stats[idx] || stats[0]
-              return (
-                <div key={idx} className="bg-slate-50 rounded-lg p-3 border border-slate-200">
-                  <div className="text-sm mb-1" style={{ fontFamily: typography.fontFamily }}>{stat.title}</div>
-                  <div className="text-xl font-bold mb-0.5" style={{ fontFamily: typography.fontFamily }}>{stat.value}</div>
-                  <div className="text-xs text-slate-500 mb-2" style={{ fontFamily: typography.fontFamily }}>{stat.prev} last</div>
-                  <svg width="100%" height="30" viewBox="0 0 100 40" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id={`gradient${idx}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style={{ stopColor: color, stopOpacity: 0.3 }} />
-                        <stop offset="100%" style={{ stopColor: color, stopOpacity: 0 }} />
-                      </linearGradient>
-                    </defs>
-                    <path d={stat.path} fill="none" stroke={color} strokeWidth="2" />
-                    <path d={`${stat.path} L 100,40 L 0,40 Z`} fill={`url(#gradient${idx})`} />
-                  </svg>
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Button Variations - Compact 3 columns */}
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { title: 'Depth', shadow: true },
-              { title: 'Soft', soft: true },
-              { title: 'Flat', flat: true },
-            ].map((style, idx) => (
-              <div key={idx} className="space-y-2">
-                <h4 className="text-sm font-semibold mb-2" style={{ fontFamily: typography.fontFamily }}>
-                  {style.title}
-                </h4>
-                {['Default', 'Hover', 'Active', 'Disabled'].map((state, i) => (
-                  <button
-                    key={i}
-                    disabled={state === 'Disabled'}
-                    style={{
-                      width: '100%',
-                      padding: `${sp.sm}px ${sp.md}px`,
-                      fontSize: `${fontSize.sm}px`,
-                      fontWeight: '500',
-                      borderRadius: `${radius.md}px`,
-                      backgroundColor: style.soft ? primaryColor + '30' : primaryColor,
-                      color: style.soft ? primaryColor : backgroundColor,
-                      border: 'none',
-                      cursor: state === 'Disabled' ? 'not-allowed' : 'pointer',
-                      fontFamily: typography.fontFamily,
-                      boxShadow: style.shadow ? (state === 'Active' ? '0 1px 0 0 rgba(0,0,0,0.2)' : '0 3px 0 0 rgba(0,0,0,0.2)') : 'none',
-                      transform: style.shadow && state === 'Active' ? 'translateY(2px)' : 'none',
-                      opacity: state === 'Disabled' ? 0.4 : state === 'Hover' ? 0.9 : 1,
-                    }}
-                  >
-                    {state}
-                  </button>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          {/* Form Elements - Compact */}
-          <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-            <h3 className="font-semibold mb-3" style={{ fontFamily: typography.fontFamily }}>Form Components</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium mb-1" style={{ fontFamily: typography.fontFamily }}>Email</label>
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  style={{
-                    width: '100%',
-                    padding: `${sp.sm}px ${sp.md}px`,
-                    fontSize: `${fontSize.sm}px`,
-                    borderRadius: `${radius.md}px`,
-                    border: `1px solid ${secondaryColor}40`,
-                    backgroundColor: backgroundColor,
-                    fontFamily: typography.fontFamily,
-                    outline: 'none',
-                  }}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1" style={{ fontFamily: typography.fontFamily }}>Password</label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  style={{
-                    width: '100%',
-                    padding: `${sp.sm}px ${sp.md}px`,
-                    fontSize: `${fontSize.sm}px`,
-                    borderRadius: `${radius.md}px`,
-                    border: `1px solid ${secondaryColor}40`,
-                    backgroundColor: backgroundColor,
-                    fontFamily: typography.fontFamily,
-                    outline: 'none',
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Alerts - Compact Single Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {colorValues.slice(0, 3).map((color, idx) => {
-              const alerts = [
-                { icon: '✓', title: 'Success', desc: 'Changes saved' },
-                { icon: 'i', title: 'Info', desc: 'New features available' },
-                { icon: '!', title: 'Warning', desc: 'Review required' },
-              ]
-              const alert = alerts[idx] || alerts[0]
-              return (
-                <div
-                  key={idx}
-                  style={{
-                    padding: `${sp.sm}px ${sp.md}px`,
-                    borderRadius: `${radius.md}px`,
-                    backgroundColor: color + '10',
-                    border: `1px solid ${color}`,
-                    display: 'flex',
-                    gap: `${sp.sm}px`,
-                    alignItems: 'center',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      borderRadius: '50%',
-                      backgroundColor: color,
-                      flexShrink: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {alert.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 style={{ fontSize: `${fontSize.sm}px`, fontWeight: '600', color: foregroundColor, fontFamily: typography.fontFamily }}>
-                      {alert.title}
-                    </h4>
-                    <p style={{ fontSize: `${fontSize.xs}px`, color: secondaryColor, fontFamily: typography.fontFamily }}>
-                      {alert.desc}
-                    </p>
+                    ))}
                   </div>
                 </div>
-              )
-            })}
-          </div>
+              </div>
+            </CardContent>
+          </Card>
 
-          {/* Navigation Elements - Breadcrumbs & Search */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {/* Breadcrumbs */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Breadcrumbs</h3>
-              <div className="flex items-center gap-2 text-sm">
-                {['Dashboard', 'Projects', 'Design System'].map((item, idx, arr) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <span 
-                      style={{ 
-                        color: idx === arr.length - 1 ? foregroundColor : secondaryColor,
-                        fontFamily: typography.fontFamily,
-                        fontWeight: idx === arr.length - 1 ? '500' : '400',
-                        cursor: idx === arr.length - 1 ? 'default' : 'pointer',
-                      }}
-                    >
-                      {item}
-                    </span>
-                    {idx < arr.length - 1 && <span style={{ color: secondaryColor }}>/</span>}
+          {/* Button Variations using shadcn Button */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base" style={{ fontFamily: typography.fontFamily }}>Buttons</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-4 gap-3">
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Primary</h4>
+                  <Button className="w-full" style={{ backgroundColor: primaryColor, color: backgroundColor }}>Default</Button>
+                  <Button className="w-full opacity-90" style={{ backgroundColor: primaryColor, color: backgroundColor }}>Hover</Button>
+                  <Button className="w-full opacity-80" style={{ backgroundColor: primaryColor, color: backgroundColor }}>Active</Button>
+                  <Button disabled className="w-full" style={{ backgroundColor: primaryColor, color: backgroundColor }}>Disabled</Button>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Secondary</h4>
+                  <Button variant="secondary" className="w-full" style={{ backgroundColor: secondaryColor + '20', color: secondaryColor }}>Default</Button>
+                  <Button variant="secondary" className="w-full" style={{ backgroundColor: secondaryColor + '30', color: secondaryColor }}>Hover</Button>
+                  <Button variant="secondary" className="w-full" style={{ backgroundColor: secondaryColor + '40', color: secondaryColor }}>Active</Button>
+                  <Button variant="secondary" disabled className="w-full" style={{ backgroundColor: secondaryColor + '20', color: secondaryColor }}>Disabled</Button>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Outline</h4>
+                  <Button variant="outline" className="w-full" style={{ borderColor: primaryColor, color: primaryColor }}>Default</Button>
+                  <Button variant="outline" className="w-full" style={{ borderColor: primaryColor, color: primaryColor, backgroundColor: primaryColor + '10' }}>Hover</Button>
+                  <Button variant="outline" className="w-full" style={{ borderColor: primaryColor, color: primaryColor, backgroundColor: primaryColor + '20' }}>Active</Button>
+                  <Button variant="outline" disabled className="w-full" style={{ borderColor: primaryColor, color: primaryColor }}>Disabled</Button>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium" style={{ fontFamily: typography.fontFamily }}>Accent</h4>
+                  <Button className="w-full" style={{ backgroundColor: accentColor, color: foregroundColor }}>Default</Button>
+                  <Button className="w-full opacity-90" style={{ backgroundColor: accentColor, color: foregroundColor }}>Hover</Button>
+                  <Button className="w-full opacity-80" style={{ backgroundColor: accentColor, color: foregroundColor }}>Active</Button>
+                  <Button disabled className="w-full" style={{ backgroundColor: accentColor, color: foregroundColor }}>Disabled</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Form and Navigation Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Payment Method Form */}
+            <Card>
+              <CardHeader className="pb-4">
+                <CardTitle className="text-base" style={{ fontFamily: typography.fontFamily }}>Payment Method</CardTitle>
+                <CardDescription>All transactions are secure and encrypted</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Name on Card */}
+                <div className="space-y-2">
+                  <Label htmlFor="name" style={{ fontFamily: typography.fontFamily }}>Name on Card</Label>
+                  <Input id="name" placeholder="John Doe" />
+                </div>
+
+                {/* Card Number and CVV */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="col-span-2 space-y-2">
+                    <Label htmlFor="cardNumber" style={{ fontFamily: typography.fontFamily }}>Card Number</Label>
+                    <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
+                    <p className="text-xs text-muted-foreground">Enter your 16-digit number.</p>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="cvv" style={{ fontFamily: typography.fontFamily }}>CVV</Label>
+                    <Input id="cvv" placeholder="123" />
+                  </div>
+                </div>
 
-            {/* Search Input */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Search</h3>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search components..."
-                  style={{
-                    width: '100%',
-                    padding: `${sp.sm}px ${sp.md}px ${sp.sm}px ${sp.xl}px`,
-                    fontSize: `${fontSize.sm}px`,
-                    borderRadius: `${radius.md}px`,
-                    border: `1px solid ${secondaryColor}40`,
-                    backgroundColor: backgroundColor,
-                    fontFamily: typography.fontFamily,
-                    outline: 'none',
-                  }}
-                />
-                <Search 
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4" 
-                  style={{ color: secondaryColor }} 
-                />
-              </div>
+                {/* Month and Year */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label style={{ fontFamily: typography.fontFamily }}>Month</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="MM" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <SelectItem key={i + 1} value={String(i + 1).padStart(2, '0')}>
+                            {String(i + 1).padStart(2, '0')}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label style={{ fontFamily: typography.fontFamily }}>Year</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="YYYY" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 10 }, (_, i) => (
+                          <SelectItem key={i} value={String(2024 + i)}>
+                            {2024 + i}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Billing Address */}
+                <div className="space-y-3">
+                  <div>
+                    <h4 className="font-medium" style={{ fontFamily: typography.fontFamily }}>Billing Address</h4>
+                    <p className="text-sm text-muted-foreground">The billing address associated with your payment method</p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox id="sameAddress" defaultChecked />
+                    <Label htmlFor="sameAddress" className="font-normal" style={{ fontFamily: typography.fontFamily }}>
+                      Same as shipping address
+                    </Label>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Comments */}
+                <div className="space-y-2">
+                  <Label htmlFor="comments" style={{ fontFamily: typography.fontFamily }}>Comments</Label>
+                  <Textarea id="comments" placeholder="Add any additional comments" rows={3} />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-2 pt-2">
+                  <Button style={{ backgroundColor: primaryColor, color: backgroundColor }}>Submit</Button>
+                  <Button variant="outline">Cancel</Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Breadcrumbs and Search */}
+            <div className="space-y-4">
+              {/* Breadcrumbs */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Breadcrumbs</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Breadcrumb>
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#">Projects</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>Design System</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </CardContent>
+              </Card>
+
+              {/* Search Input */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Search</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Search components..."
+                      className="pl-10"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
 
@@ -422,263 +616,221 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
               ]
               const product = products[idx] || products[0]
               return (
-                <div
+                <Card
                   key={idx}
                   style={{
-                    padding: `${sp.lg}px`,
-                    borderRadius: `${radius.lg}px`,
-                    backgroundColor: backgroundColor,
                     border: `2px solid ${color}`,
-                    boxShadow: shadow.md,
                   }}
                 >
-                  <h3 style={{ fontSize: `${fontSize.lg}px`, fontWeight: '700', fontFamily: typography.fontFamily, marginBottom: `${sp.xs}px` }}>
-                    {product.title}
-                  </h3>
-                  <div style={{ fontSize: '32px', fontWeight: '800', fontFamily: typography.fontFamily, color: color, marginBottom: `${sp.md}px` }}>
-                    {product.price}
-                    <span style={{ fontSize: `${fontSize.sm}px`, color: secondaryColor, fontWeight: '400' }}>/mo</span>
-                  </div>
-                  <div className="space-y-2">
+                  <CardHeader className="pb-2">
+                    <CardTitle style={{ fontFamily: typography.fontFamily }}>
+                      {product.title}
+                    </CardTitle>
+                    <div style={{ fontSize: '32px', fontWeight: '800', fontFamily: typography.fontFamily, color: color }}>
+                      {product.price}
+                      <span className="text-sm text-muted-foreground font-normal">/mo</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
                     {product.features.map((feature, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <div style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: color + '20', marginTop: '2px', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: color }}></div>
                         </div>
-                        <span style={{ fontSize: `${fontSize.sm}px`, fontFamily: typography.fontFamily, color: foregroundColor }}>
+                        <span className="text-sm" style={{ fontFamily: typography.fontFamily }}>
                           {feature}
                         </span>
                       </div>
                     ))}
-                  </div>
-                  <button
-                    style={{
-                      width: '100%',
-                      marginTop: `${sp.md}px`,
-                      padding: `${sp.sm}px`,
-                      fontSize: `${fontSize.sm}px`,
-                      fontWeight: '500',
-                      borderRadius: `${radius.md}px`,
-                      backgroundColor: color,
-                      color: backgroundColor,
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontFamily: typography.fontFamily,
-                    }}
-                  >
-                    Get Started
-                  </button>
-                </div>
+                    <Button
+                      className="w-full mt-4"
+                      style={{ backgroundColor: color }}
+                    >
+                      Get Started
+                    </Button>
+                  </CardContent>
+                </Card>
               )
             })}
           </div>
 
-          {/* Toggle Switches & Progress Bars */}
+          {/* Toggle Switches & Progress Bars using shadcn components */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {/* Toggles */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Toggle Switches</h3>
-              <div className="space-y-3">
+            {/* Toggles using shadcn Switch */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Toggle Switches</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 {['Enable notifications', 'Dark mode', 'Auto-save'].map((label, idx) => (
                   <div key={idx} className="flex items-center justify-between">
-                    <span style={{ fontSize: `${fontSize.sm}px`, fontFamily: typography.fontFamily }}>{label}</span>
-                    <div
-                      style={{
-                        width: '44px',
-                        height: '24px',
-                        borderRadius: '12px',
-                        backgroundColor: idx === 0 ? primaryColor : secondaryColor + '30',
-                        position: 'relative',
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: '20px',
-                          height: '20px',
-                          borderRadius: '50%',
-                          backgroundColor: backgroundColor,
-                          position: 'absolute',
-                          top: '2px',
-                          left: idx === 0 ? '22px' : '2px',
-                          transition: 'left 0.2s',
-                          boxShadow: shadow.sm,
-                        }}
-                      />
-                    </div>
+                    <Label htmlFor={`switch-${idx}`} style={{ fontFamily: typography.fontFamily }}>{label}</Label>
+                    <Switch id={`switch-${idx}`} defaultChecked={idx === 0} />
                   </div>
                 ))}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
-            {/* Progress Bars */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Progress</h3>
-              <div className="space-y-3">
+            {/* Progress Bars using shadcn Progress */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Progress</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 {[
-                  { label: 'Upload', value: 75, color: getColorByIndex(0) },
-                  { label: 'Processing', value: 45, color: getColorByIndex(1) },
-                  { label: 'Complete', value: 100, color: getColorByIndex(2) },
+                  { label: 'Upload', value: 75 },
+                  { label: 'Processing', value: 45 },
+                  { label: 'Complete', value: 100 },
                 ].map((item, idx) => (
-                  <div key={idx}>
-                    <div className="flex justify-between mb-1">
-                      <span style={{ fontSize: `${fontSize.xs}px`, fontFamily: typography.fontFamily, color: secondaryColor }}>{item.label}</span>
-                      <span style={{ fontSize: `${fontSize.xs}px`, fontFamily: typography.fontFamily, color: secondaryColor }}>{item.value}%</span>
+                  <div key={idx} className="space-y-2">
+                    <div className="flex justify-between">
+                      <Label style={{ fontFamily: typography.fontFamily }}>{item.label}</Label>
+                      <span className="text-xs text-muted-foreground">{item.value}%</span>
                     </div>
-                    <div style={{ width: '100%', height: '8px', backgroundColor: secondaryColor + '20', borderRadius: `${radius.sm}px`, overflow: 'hidden' }}>
-                      <div style={{ width: `${item.value}%`, height: '100%', backgroundColor: item.color, transition: 'width 0.3s' }}></div>
-                    </div>
+                    <Progress value={item.value} />
                   </div>
                 ))}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Tags & Badges using shadcn Badge */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Tags & Badges</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {['React', 'TypeScript', 'Design', 'UI/UX', 'Frontend', 'Tailwind'].map((tag, idx) => (
+                  <Badge
+                    key={idx}
+                    variant={idx % 3 === 0 ? 'default' : idx % 3 === 1 ? 'secondary' : 'outline'}
+                    style={{ fontFamily: typography.fontFamily }}
+                  >
+                    {tag}
+                  </Badge>
+                ))}
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          {/* Tags & Badges */}
-          <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-            <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Tags & Badges</h3>
-            <div className="flex flex-wrap gap-2">
-              {['React', 'TypeScript', 'Design', 'UI/UX', 'Frontend', 'Tailwind'].map((tag, idx) => (
-                <span
-                  key={idx}
-                  style={{
-                    padding: `${sp.xs}px ${sp.sm}px`,
-                    fontSize: `${fontSize.xs}px`,
-                    fontWeight: '500',
-                    borderRadius: `${radius.sm}px`,
-                    backgroundColor: getColorByIndex(idx % colorValues.length) + '15',
-                    color: getColorByIndex(idx % colorValues.length),
-                    border: `1px solid ${getColorByIndex(idx % colorValues.length)}30`,
-                    fontFamily: typography.fontFamily,
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Simple Data Table */}
-          <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-            <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Data Table</h3>
-            <div style={{ borderRadius: `${radius.md}px`, overflow: 'hidden', border: `1px solid ${secondaryColor}20` }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ backgroundColor: primaryColor, color: backgroundColor }}>
-                    {['Component', 'Status', 'Updated'].map((header, idx) => (
-                      <th key={idx} style={{ padding: `${sp.sm}px ${sp.md}px`, textAlign: 'left', fontSize: `${fontSize.xs}px`, fontWeight: '600', fontFamily: typography.fontFamily }}>
-                        {header}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
+          {/* Simple Data Table using shadcn Table */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Data Table</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead style={{ fontFamily: typography.fontFamily }}>Component</TableHead>
+                    <TableHead style={{ fontFamily: typography.fontFamily }}>Status</TableHead>
+                    <TableHead style={{ fontFamily: typography.fontFamily }}>Updated</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {[
                     { name: 'Button', status: 'Complete', date: 'Today' },
                     { name: 'Input', status: 'In Progress', date: 'Yesterday' },
                     { name: 'Modal', status: 'Review', date: '2 days ago' },
                   ].map((row, idx) => (
-                    <tr key={idx} style={{ backgroundColor: idx % 2 === 0 ? backgroundColor : secondaryColor + '05', borderTop: `1px solid ${secondaryColor}10` }}>
-                      <td style={{ padding: `${sp.sm}px ${sp.md}px`, fontSize: `${fontSize.sm}px`, fontFamily: typography.fontFamily, color: foregroundColor }}>
-                        {row.name}
-                      </td>
-                      <td style={{ padding: `${sp.sm}px ${sp.md}px` }}>
-                        <span style={{ 
-                          padding: `${sp.xs / 2}px ${sp.sm}px`, 
-                          fontSize: `${fontSize.xs}px`, 
-                          borderRadius: `${radius.sm}px`,
-                          backgroundColor: getColorByIndex(idx) + '15',
-                          color: getColorByIndex(idx),
-                          fontFamily: typography.fontFamily,
-                        }}>
+                    <TableRow key={idx}>
+                      <TableCell style={{ fontFamily: typography.fontFamily }}>{row.name}</TableCell>
+                      <TableCell>
+                        <Badge variant={idx === 0 ? 'default' : idx === 1 ? 'secondary' : 'outline'}>
                           {row.status}
-                        </span>
-                      </td>
-                      <td style={{ padding: `${sp.sm}px ${sp.md}px`, fontSize: `${fontSize.sm}px`, fontFamily: typography.fontFamily, color: secondaryColor }}>
-                        {row.date}
-                      </td>
-                    </tr>
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground" style={{ fontFamily: typography.fontFamily }}>{row.date}</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
 
           {/* Design Token Showcases */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {/* Typography Scale */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Typography</h3>
-              <div className="space-y-2">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Typography</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
                 {Object.entries(fontSize).slice(0, 4).map(([key, value]) => (
                   <div key={key} className="flex items-center gap-2">
-                    <div className="w-8 text-xs font-mono text-slate-500">{key}</div>
-                    <div style={{ fontFamily: typography.fontFamily, fontSize: `${value}px`, color: foregroundColor }}>
+                    <div className="w-8 text-xs font-mono text-muted-foreground">{key}</div>
+                    <div style={{ fontFamily: typography.fontFamily, fontSize: `${value}px` }}>
                       Aa
                     </div>
-                    <div className="text-xs text-slate-400 ml-auto">{Math.round(value)}px</div>
+                    <div className="text-xs text-muted-foreground ml-auto">{Math.round(value)}px</div>
                   </div>
                 ))}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Spacing Scale */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Spacing</h3>
-              <div className="space-y-2">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Spacing</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
                 {Object.entries(sp).map(([key, value]) => (
                   <div key={key} className="flex items-center gap-2">
-                    <div className="w-8 text-xs font-mono text-slate-500">{key}</div>
-                    <div 
-                      style={{ 
+                    <div className="w-8 text-xs font-mono text-muted-foreground">{key}</div>
+                    <div
+                      style={{
                         width: `${value}px`,
                         height: '16px',
                         backgroundColor: primaryColor,
                         borderRadius: '2px',
                       }}
                     />
-                    <div className="text-xs text-slate-400 ml-auto">{value}px</div>
+                    <div className="text-xs text-muted-foreground ml-auto">{value}px</div>
                   </div>
                 ))}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Border Radius */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>Radius</h3>
-              <div className="space-y-3">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>Radius</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
                 {Object.entries(radius).map(([key, value]) => (
                   <div key={key} className="flex items-center gap-2">
-                    <div className="w-8 text-xs font-mono text-slate-500">{key}</div>
-                    <div 
-                      style={{ 
+                    <div className="w-8 text-xs font-mono text-muted-foreground">{key}</div>
+                    <div
+                      style={{
                         width: '40px',
                         height: '40px',
                         backgroundColor: getColorByIndex(1),
                         borderRadius: `${value}px`,
                       }}
                     />
-                    <div className="text-xs text-slate-400 ml-auto">{value}px</div>
+                    <div className="text-xs text-muted-foreground ml-auto">{value}px</div>
                   </div>
                 ))}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Shadow and Line Height */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Shadows */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>
-                Shadows
-              </h3>
-              <div className="space-y-3">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>
+                  Shadows
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
                 {Object.entries(shadow).map(([key, value]) => (
                   <div key={key} className="space-y-2">
-                    <div className="text-xs font-mono text-slate-500">{key}</div>
-                    <div 
-                      style={{ 
+                    <div className="text-xs font-mono text-muted-foreground">{key}</div>
+                    <div
+                      style={{
                         width: '100%',
                         height: '60px',
                         backgroundColor: backgroundColor,
@@ -689,37 +841,36 @@ export default function ComponentPreview({ colors, typography, spacing, borderRa
                     />
                   </div>
                 ))}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Line Height */}
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
-              <h3 className="font-semibold mb-3 text-sm" style={{ fontFamily: typography.fontFamily }}>
-                Line Height
-              </h3>
-              <div className="space-y-3">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm" style={{ fontFamily: typography.fontFamily }}>
+                  Line Height
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
                 {Object.entries(lineHeight).map(([key, value]) => (
                   <div key={key}>
-                    <div className="text-xs font-mono text-slate-500 mb-1">
+                    <div className="text-xs font-mono text-muted-foreground mb-1">
                       {key}: {value}
                     </div>
-                    <p 
-                      style={{ 
+                    <p
+                      className="bg-muted p-2 rounded-sm"
+                      style={{
                         fontFamily: typography.fontFamily,
                         fontSize: `${fontSize.sm}px`,
                         lineHeight: value,
-                        color: foregroundColor,
-                        backgroundColor: secondaryColor + '10',
-                        padding: `${sp.xs}px ${sp.sm}px`,
-                        borderRadius: `${radius.sm}px`,
                       }}
                     >
                       The quick brown fox jumps over the lazy dog.
                     </p>
                   </div>
                 ))}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </CardContent>
       </Card>
